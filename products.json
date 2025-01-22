@@ -1,0 +1,21 @@
+[
+    {
+        "product_id": 111,
+        "product_name": "Mango",
+        "product_price": 200.0,
+        "product_quantity": 10
+    },
+    {
+        "product_id": 112,
+        "product_name": "Avocado",
+        "product_price": 300.0,
+        "product_quantity": 15
+    }
+][
+    {
+        "product_id": 113,
+        "product_name": "Apple",
+        "product_quantity": 10,
+        "product_price": 400.0
+    }
+]
