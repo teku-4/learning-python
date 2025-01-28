@@ -1,0 +1,162 @@
+from tkinter import *
+from tkinter import messagebox
+import re
+
+root = Tk()
+root.title("Registration Form")
+root.geometry("400x600")
+
+# Function to validate password
+def validate_password(password):
+    if len(password) < 8:
+        return "Password must be at least 8 characters long."
+    if not re.search(r"[A-Z]", password):
+        return "Password must contain at least one uppercase letter."
+    if not re.search(r"\d", password):
+        return "Password must contain at least one number."
+    if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
+        return "Password must contain at least one special character."
+    return None
+
+# Function to validate email
+def validate_email(email):
+    pattern = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+    if not re.match(pattern, email):
+        return "Invalid email format."
+    return None
+
+# Function to clear all input fields
+def clear_fields():
+    first_name.delete(0, END)
+    last_name.delete(0, END)
+    email.delete(0, END)
+    password.delete(0, END)
+    work_experience.delete(0, END)
+    cumulative_gpa.delete(0, END)
+    departments.set("Select Department")
+    educations.set("Select Education Level")
+
+# Function to display form data
+def display():
+    Fname = first_name.get()
+    Lname = last_name.get()
+    Email = email.get()
+    Password = password.get()
+    WorkExperience = work_experience.get()
+    CGPA = cumulative_gpa.get()
+    Department = departments.get()
+    EducationLevel = educations.get()
+
+    # Validate password
+    password_error = validate_password(Password)
+    if password_error:
+        messagebox.showerror("Password Error", password_error)
+        return
+
+    # Validate email
+    email_error = validate_email(Email)
+    if email_error:
+        messagebox.showerror("Email Error", email_error)
+        return
+
+    # Validate and cast work experience
+    try:
+        WorkExperience = int(WorkExperience)
+    except ValueError:
+        messagebox.showerror("Work Experience Error", "Work experience must be a valid number.")
+        return
+
+    # Display information
+    informations = (
+        f"First Name: {Fname}\n"
+        f"Last Name: {Lname}\n"
+        f"Email: {Email}\n"
+        f"Work Experience: {WorkExperience}\n"
+        f"Cumulative GPA: {CGPA}\n"
+        f"Department: {Department}\n"
+        f"Education Level: {EducationLevel}"
+    )
+    messagebox.showinfo(title="Form Information", message=f"Entered Information:\n\n{informations}")
+
+# Function to save form data
+def save():
+    Fname = first_name.get()
+    Lname = last_name.get()
+    Email = email.get()
+    Password = password.get()
+    WorkExperience = work_experience.get()
+    CGPA = cumulative_gpa.get()
+    Department = departments.get()
+    EducationLevel = educations.get()
+
+    # Validate password
+    password_error = validate_password(Password)
+    if password_error:
+        messagebox.showerror("Password Error", password_error)
+        return
+
+    # Validate email
+    email_error = validate_email(Email)
+    if email_error:
+        messagebox.showerror("Email Error", email_error)
+        return
+
+    # Validate and cast work experience
+    try:
+        WorkExperience = int(WorkExperience)
+    except ValueError:
+        messagebox.showerror("Work Experience Error", "Work experience must be a valid number.")
+        return
+
+    # Save data to a file
+    with open("form_data.txt", "a") as file:
+        file.write(
+            f"First Name: {Fname}, Last Name: {Lname}, Email: {Email}, "
+            f"Work Experience: {WorkExperience}, CGPA: {CGPA}, "
+            f"Department: {Department}, Education Level: {EducationLevel}\n"
+        )
+
+    # Show success message
+    messagebox.showinfo("Success", "Data saved successfully!")
+    clear_fields()
+
+# Widgets
+Label(root, text="Enter the following info carefully", font=("Ink Free", 20, "bold"), bg="black", fg="green").grid(row=0, column=1, columnspan=2)
+
+Label(root, text="First Name:", font=("Arial", 10, "bold")).grid(row=1, column=0, padx=5, pady=5)
+first_name = Entry(root)
+first_name.grid(row=1, column=1)
+
+Label(root, text="Last Name:", font=("Arial", 10, "bold")).grid(row=2, column=0, padx=5, pady=5)
+last_name = Entry(root)
+last_name.grid(row=2, column=1)
+
+Label(root, text="Email Address:", font=("Arial", 10, "bold")).grid(row=3, column=0, padx=5, pady=5)
+email = Entry(root)
+email.grid(row=3, column=1)
+
+Label(root, text="Password:", font=("Arial", 10, "bold")).grid(row=4, column=0, padx=5, pady=5)
+password = Entry(root, show="*")
+password.grid(row=4, column=1)
+
+Label(root, text="Work Experience (years):", font=("Arial", 10, "bold")).grid(row=5, column=0, padx=5, pady=5)
+work_experience = Entry(root)
+work_experience.grid(row=5, column=1)
+
+Label(root, text="Cumulative GPA:", font=("Arial", 10, "bold")).grid(row=6, column=0, padx=5, pady=5)
+cumulative_gpa = Entry(root)
+cumulative_gpa.grid(row=6, column=1)
+
+Label(root, text="Department:", font=("Arial", 10, "bold")).grid(row=7, column=0, padx=5, pady=5)
+departments = StringVar(value="Select Department")
+OptionMenu(root, departments, "Software", "Computer Science", "Information Technology", "Information System", "Medicine", "Pharmacy").grid(row=7, column=1)
+
+Label(root, text="Education Level:", font=("Arial", 10, "bold")).grid(row=8, column=0, padx=5, pady=5)
+educations = StringVar(value="Select Education Level")
+OptionMenu(root, educations, "Diploma", "Bachelor Degree", "Masters", "PhD").grid(row=8, column=1)
+
+# Buttons
+Button(root, text="Display", font=("Arial", 10, "bold"), command=display).grid(row=9, column=0, pady=10)
+Button(root, text="Save", font=("Arial", 10, "bold"), command=save).grid(row=9, column=1, pady=10)
+
+root.mainloop()
