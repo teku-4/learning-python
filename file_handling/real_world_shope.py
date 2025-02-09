@@ -65,13 +65,22 @@ try:
            else:
               print('insufficient quantity')   
         else:
-           print('there is no such product')        
+           print('there is no such product')   
+   def delete_file():
       
+         file_name=input('enter file name to delete')
+         filename=file_name+'json'
+         if os.path.exists(filename):
+            os.remove(f'{filename}')
+            print(f'file name {filename} is deleted succesfully')
+         print('not such file')
    while True:
      print('1 to create product')
      print('2 to add product')
      print('3 to view product')
-     print('5 to exit ')
+     print('4 to parchase')
+     print('5 to delete file ')
+     print('6 to exite')
      choice=int(input("enter choice(1--4)"))
      match choice:
         case 1:
@@ -82,11 +91,19 @@ try:
             veiws_prodacts()
         case 4:
             parches_products()
+
         case 5:
+            delete_file()            
+        case 6:
             print('Goodbye have a nice time')
             break
         case _:   
             print('incorrect input')
-            
-except Exception as er:
-   print(f"error{er}")
+
+except json.JSONDecodeError:
+   print("code your file correctly")              
+except FileNotFoundError:
+   print("there is no such file")
+except Exception as e:
+   print('unexpected error')        
+
