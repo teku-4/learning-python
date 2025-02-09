@@ -1,2 +1,0 @@
-import shoping 
-print(shoping)
